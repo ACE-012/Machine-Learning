@@ -1,6 +1,5 @@
 from PIL import Image
 from numpy import asarray,savetxt
-
 img = Image.open('./Datasets/lung/Normal cases/Normal case (1).jpg').convert('L')
 numpydata = asarray(img)
 img.save('greyscale.png')
