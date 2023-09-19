@@ -1,0 +1,12 @@
+bin
+Datasets
+.vscode
+lib
+pyvenv.cfg
+share
+etc
+.ipynb_checkpoints
+test
+train
+val
+*.h5
