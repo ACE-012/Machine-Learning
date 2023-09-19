@@ -14,15 +14,20 @@ from tensorflow.python.keras.layers import Dropout
 from tensorflow.python.keras.layers import Dense
 
 # %%
+os.environ['XLA_FLAGS'] = "--xla_gpu_cuda_data_dir=/usr/lib/cuda"
+os.system('export XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/lib/cuda')
+os.system('echo $XLA_FLAGS')
+
+# %%
 print(tf.__version__)
 
 # %%
-data_dir = pathlib.Path('./Datasets/lung/').with_suffix('')
-image_count = len(list(data_dir.glob('*/*.jpg')))
+data_dir = pathlib.Path('./Datasets/lung_image_sets/').with_suffix('')
+image_count = len(list(data_dir.glob('*/*.jpeg')))
 print(image_count)
 
 # %%
-bengin=list(data_dir.glob('Bengin cases/*'))
+bengin=list(data_dir.glob('lung_n/*'))
 PIL.Image.open(str(bengin[1]))
 
 # %%
@@ -41,7 +46,7 @@ val_ds = tf.keras.utils.image_dataset_from_directory(
   subset="validation",
   seed=123,
   image_size=(512, 512),
-  batch_size=4)
+  batch_size=32)
 
 # %%
 class_names_ = train_ds.class_names
@@ -101,7 +106,7 @@ model.compile(
 model.fit(
   train_ds,
   validation_data=val_ds,
-  epochs=3
+  epochs=10
 )
 
 
