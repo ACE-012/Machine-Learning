@@ -4,5 +4,7 @@ Datasets
 share
 etc
 *.h5
-lib/python3.10/site-packages/ten*
-lib/python3.10/site-packages/nvidia
+lib
+bin
+share
+pyvenv.cfg
