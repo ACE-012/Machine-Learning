@@ -16,5 +16,3 @@ arr=np.expand_dims(arr,axis=0)
 pred=model.predict(arr)[0][0]
 print(f'{class_names[0]}\t:{(1-pred)*100:.2f}%')
 print(f'{class_names[1]}\t:{(pred)*100:.2f}%')
-
-
