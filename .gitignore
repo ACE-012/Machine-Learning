@@ -8,3 +8,4 @@ lib
 bin
 share
 pyvenv.cfg
+test.txt
