@@ -6,7 +6,7 @@ from keras.layers import Conv2D
 from keras.layers import MaxPool2D
 from keras.layers import Flatten
 from keras.layers import Dense
-from keras.callbacks import ModelCheckpoint,EarlyStopping
+from keras.callbacks import EarlyStopping
 from custom_fn import specificity,recall
 # ------------------------------------------------------------------------------------------
 gpus = tf.config.list_physical_devices('GPU')
@@ -22,10 +22,10 @@ data_dir = pathlib.Path('./Datasets/lung/').with_suffix('')
 
 train_ds,val_ds = tf.keras.utils.image_dataset_from_directory(
   data_dir,
-  validation_split=0.3,
+  validation_split=0.1,
   subset="both",
   label_mode="binary",
-  seed=123,
+  seed=223,
   image_size=(512, 512),
   batch_size=32)
 
@@ -40,8 +40,8 @@ model.add(MaxPool2D())
 model.add(Conv2D(filters=128,kernel_size=(3,3),activation='relu'))
 model.add(MaxPool2D())
 model.add(Flatten())
+model.add(Dense(units=32,activation='relu'))
 model.add(Dense(units=16,activation='relu'))
-model.add(Dense(units=8,activation='relu'))
 model.add(Dense(1,activation='sigmoid'))
 model.summary()
 
@@ -51,9 +51,10 @@ model.compile(
   metrics=['accuracy',specificity,recall])
 
 es=EarlyStopping(monitor="val_accuracy",min_delta=0.01,patience=6,verbose=1)
-mc=ModelCheckpoint(monitor="val_accuracy",filepath="./bestmodel.h5",save_best_only=True)
-cd=[es,mc]
+cd=[es]
 
 model.fit(train_ds,
   validation_data=val_ds,   epochs=30,
   use_multiprocessing=True, callbacks=cd)
+
+model.save('bestmodel90_10.keras')
